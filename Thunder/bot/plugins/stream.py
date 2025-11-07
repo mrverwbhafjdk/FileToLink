@@ -30,6 +30,7 @@ from Thunder.utils.messages import (
 from Thunder.utils.rate_limiter import handle_rate_limited_request
 from Thunder.vars import Var
 
+
 BATCH_SIZE = 10
 LINK_CHUNK_SIZE = 20
 BATCH_UPDATE_INTERVAL = 5
@@ -255,6 +256,7 @@ async def link_handler(bot: Client, msg: Message, **kwargs):
 
 @StreamBot.on_message(
     filters.private &
+    filters.user(Var.OWNER_ID) &
     filters.incoming &
     (filters.document | filters.video | filters.photo | filters.audio |
      filters.voice | filters.animation | filters.video_note),
@@ -599,3 +601,4 @@ async def process_batch(
         )
     if notification_msg:
         await safe_delete_message(notification_msg)
+
