@@ -31,7 +31,9 @@ from Thunder.utils.messages import (
 )
 from Thunder.vars import Var
 
-@StreamBot.on_message(filters.command("start") & filters.private)
+owner_filter = filters.private & filters.user(Var.OWNER_ID)
+
+@StreamBot.on_message(filters.command("start") & owner_filter)
 async def start_command(bot: Client, msg: Message):
     if not await check_banned(bot, msg):
         return
@@ -115,7 +117,7 @@ async def start_command(bot: Client, msg: Message):
         await asyncio.sleep(e.value)
         await msg.reply_text(text=txt, reply_markup=InlineKeyboardMarkup(btns))
 
-@StreamBot.on_message(filters.command("help") & filters.private)
+@StreamBot.on_message(filters.command("help") & owner_filter)
 async def help_command(bot: Client, msg: Message):
     if not await check_banned(bot, msg):
         return
@@ -136,7 +138,7 @@ async def help_command(bot: Client, msg: Message):
         await asyncio.sleep(e.value)
         await msg.reply_text(text=txt, reply_markup=InlineKeyboardMarkup(btns))
 
-@StreamBot.on_message(filters.command("about") & filters.private)
+@StreamBot.on_message(filters.command("about") & owner_filter)
 async def about_command(bot: Client, msg: Message):
     if not await check_banned(bot, msg):
         return
@@ -243,7 +245,7 @@ async def dc_command(bot: Client, msg: Message):
     else:
         await reply_user_err(msg, MSG_DC_ANON_ERROR)
 
-@StreamBot.on_message(filters.command("ping") & filters.private)
+@StreamBot.on_message(filters.command("ping") & owner_filter)
 async def ping_command(bot: Client, msg: Message):
     if not await check_banned(bot, msg):
         return
@@ -278,3 +280,4 @@ async def ping_command(bot: Client, msg: Message):
         )
     except MessageNotModified:
         pass
+
